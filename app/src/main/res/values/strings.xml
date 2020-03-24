@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Help</string>
+    <string name="btnGiris">GİRİŞ</string>
+    <string name="btnGirisYap">GİRİŞ YAP</string>
+    <string name="btnKayit">KAYIT OL</string>
+    <string name="btnProfil">Profil Oluştur</string>
+    <string name="btnProfilTamamla">Profil Oluştur</string>
+    <string name="btnCikis">Çıkış Yap</string>
+    <string name="btnBilgi">BİZ KİMİZ?</string>
+    <string name="alinanKullanici"></string>
+    <string name="btnProfilDuzenle">PROFİL DÜZENLE</string>
+    <string name="kullan_c_ad">Kullanıcı Adı</string>
+    <string name="kronik_hastal_klar">Kronik Hastalıklar</string>
+    <string name="gecirilen_hastaliklar">Geçirilen Hastalıklar</string>
+    <string name="sim_soyisim">İsim-Soyisim</string>
+    <string name="e_mail">E-mail</string>
+    <string name="tc_kimlik_numaras">TC Kimlik Numarası</string>
+    <string name="cinsiyet">Cinsiyet</string>
+    <string name="kullan_lan_la">Kullanılan İlaç</string>
+    <string name="kan_grubu">Kan Grubu</string>
+    <string name="yak_n_ad">Yakın adı</string>
+    <string name="yakin_kisinin_iletisim_bilgisi">Yakın kişinin iletişim bilgisi</string>
+
+
+</resources>

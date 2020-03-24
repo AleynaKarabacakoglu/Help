@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Activites.Bilgilendirme">
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="3"
+        app:srcCompat="@drawable/ambulans"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_weight="3"
+        >
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:layout_margin="40dp"
+        app:srcCompat="@drawable/itfaiye"
+        />
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:layout_margin="40dp"
+        app:srcCompat="@drawable/polis"
+        />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="vertical"
+        >
+        <Button
+            android:id="@+id/btnBilgi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/btnBilgi"
+            app:cornerRadius="10dp"
+            />
+
+        <LinearLayout
+            android:id="@+id/bilgiLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            >
+            <TextView
+
+                android:id="@+id/size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:text="Merhabalar biz acil durumlarda en kısa sürede yardımınıza koşmak için varız. Öncelikle size   en kısa ve en iyi şekilde ulaşmak için, profil bilgilerinizi tamamlamalısınız. Daha sonra anasayfaya erişebilirsiniz. Yangın, hastalık, hırsızlık, cinayet, yaralama, kaza gibi durumlarda HELP butonuna tıklamanız yeterlidir."
+                android:textSize="18sp"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnProfil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/btnProfil"
+            app:cornerRadius="10dp"
+            />
+        <Button
+            android:id="@+id/btnCikis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/btnCikis"
+            app:cornerRadius="10dp"
+            />
+    </LinearLayout>
+</LinearLayout>
