@@ -10,16 +10,30 @@
     <string name="alinanKullanici"></string>
     <string name="btnProfilDuzenle">PROFİL DÜZENLE</string>
     <string name="kullan_c_ad">Kullanıcı Adı</string>
-    <string name="kronik_hastal_klar">Kronik Hastalıklar</string>
-    <string name="gecirilen_hastaliklar">Geçirilen Hastalıklar</string>
-    <string name="sim_soyisim">İsim-Soyisim</string>
     <string name="e_mail">E-mail</string>
-    <string name="tc_kimlik_numaras">TC Kimlik Numarası</string>
-    <string name="cinsiyet">Cinsiyet</string>
-    <string name="kullan_lan_la">Kullanılan İlaç</string>
-    <string name="kan_grubu">Kan Grubu</string>
-    <string name="yak_n_ad">Yakın adı</string>
-    <string name="yakin_kisinin_iletisim_bilgisi">Yakın kişinin iletişim bilgisi</string>
+
+
+
+    <string name="etKullanici">İsim-Soyisim</string>
+    <string name="etTC">TC Kimlik Numarası</string>
+    <string name="etIlac">Kullanılan İlaç</string>
+    <string name="txtCinsiyet">  Cinsiyet</string>
+    <string name="etKronik">Kronik Hastalıklar</string>
+    <string name="etGecirilen">Geçirilen Hastalıklar</string>
+    <string name="etYakinadi">Yakın adı</string>
+    <string name="etYakinNum">Yakın kişinin iletişim bilgisi</string>
+    <string name="etNumara">İletişim Numarası</string>
+
+    <string name="ListViewKan">Kan Grubu</string>
+
+    <string name="radioBtnKadin">Kadın</string>
+    <string name="radioBtnErkek">Erkek</string>
+    <string name="radioGroupCinsiyet">Kan</string>
+    <string name="alinanCinsiyet">Kan</string>
+    <string name="spinnerKan">Kan</string>
+    <string name="spinnerRh" />
+
+
 
 
 </resources>

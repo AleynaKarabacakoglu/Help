@@ -28,7 +28,7 @@ public class Anasayfa extends AppCompatActivity {
     private static final String TAG = "Anasayfa";
     private ImageButton btnHelp;
     private Button btnCikis, btnProfilDuzenle;
-    public TextView txtalinanKullanici;
+    public TextView txtalinanKullanici,txtcinsiyet;
     String alinanMesaj, alinanMesaj2;
     String alinanEnlem;
     String alinanBoylam;
@@ -43,6 +43,7 @@ public class Anasayfa extends AppCompatActivity {
         btnProfilDuzenle = findViewById(R.id.btnProfilDuzenle);
         txtalinanKullanici = findViewById(R.id.alinanKullanici);
         fAuth = FirebaseAuth.getInstance();
+        txtcinsiyet=findViewById(R.id.alinanCinsiyet);
 
     }
 
@@ -80,7 +81,8 @@ public class Anasayfa extends AppCompatActivity {
 //         alinanMesaj2=al.getStringExtra("veri2");//için parametre olarak
         alinanBoylam = al.getStringExtra("boylam");//tanımlanan keyler girildi.
         alinanEnlem = al.getStringExtra("enlem");
-        konum = alinanEnlem + "  " + alinanBoylam;
+        konum = alinanEnlem ;//+ "  " + alinanBoylam;
+        txtcinsiyet.setText(konum);
         kayitlariGetir();
 //
 //        txtalinanKullanici.setText(konum);

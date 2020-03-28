@@ -14,6 +14,7 @@ public class Kullanici {
         this.kan = kan;
         this.yakinadi = yakin_adi;
         this.yakinno = yakin_no;
+        this.cinsiyet=cinsiyet;
     }
 
     public Kullanici(String username, String email, String password) {
@@ -82,6 +83,9 @@ public class Kullanici {
     public void setYakinadi(String yakinadi) {
         this.yakinadi = yakinadi;
     }
+    public String getYakinadi() {
+        return yakinadi;
+    }
 
     public String getYakinno() {
         return yakinno;
@@ -98,6 +102,15 @@ public class Kullanici {
     public void setCinsiyet(String cinsiyet) {
         this.cinsiyet = cinsiyet;
     }
+
+    public String getKan() {
+        return kan;
+    }
+
+    public void setKan(String kan) {
+        this.kan = kan;
+    }
+
 }
 
 

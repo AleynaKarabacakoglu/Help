@@ -26,128 +26,153 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         android:gravity="center"
+
         >
 
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <com.google.android.material.textfield.TextInputEditText
+        <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/sim_soyisim"
+                android:hint="@string/etKullanici"
                 android:id="@+id/etKullanici"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                android:layout_weight="2"
             >
-            <com.google.android.material.textfield.TextInputEditText
+
+        </EditText>
+
+
+        <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/e_mail"
-                android:id="@+id/etMail"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/tc_kimlik_numaras"
+                android:hint="@string/etTC"
                 android:id="@+id/etTC"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_weight="2">
 
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <com.google.android.material.textfield.TextInputEditText
+        </EditText>
+        <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/cinsiyet"
-                android:id="@+id/etCinsiyet"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="@string/txtCinsiyet"
+                android:id="@+id/txtCinsiyet"
+                android:layout_weight="1"
+            android:paddingLeft="8dp"
+                >
+        </TextView>
 
-        <com.google.android.material.textfield.TextInputLayout
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/radioGroupCinsiyet"
+            android:layout_weight="1"
+            >
+                <RadioButton
+                    android:id="@+id/radioBtnKadin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/radioBtnKadin"
+                    android:layout_margin="10dp"
+                    android:onClick="onRadioButtonClicked"
+                    />
+
+                <RadioButton
+                    android:id="@+id/radioBtnErkek"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/radioBtnErkek"
+                    android:layout_margin="10dp"
+                    android:onClick="onRadioButtonClicked"
+                    />
+        </RadioGroup>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/etIlac"
+            android:id="@+id/etIlac"
+            android:layout_weight="2"
+            >
+
+        </EditText>
+
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/etKronik"
+                android:id="@+id/etKronik"
+                android:layout_weight="2">
+
+        </EditText>
+        <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/etGecirilen"
+                android:id="@+id/etGecirilen"
+                android:layout_weight="2">
+
+        </EditText>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Kan"
+            android:paddingLeft="8dp"
+            >
+        </TextView>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
-        <com.google.android.material.textfield.TextInputEditText
+        android:orientation="horizontal">
+        <Spinner
+            android:id="@+id/spinnerKan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/kullan_lan_la"
-            android:id="@+id/etIlac"
-            />
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:hint="@string/spinnerKan"
+            android:layout_weight="2"
+            android:layout_margin="5dp"
+            >
+        </Spinner>
+        <Spinner
+            android:id="@+id/spinnerRh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:hint="@string/spinnerRh"
+            android:layout_weight="2"
+            android:layout_margin="5dp"
+            >
+        </Spinner>
+    </LinearLayout>
 
-    </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <com.google.android.material.textfield.TextInputEditText
+        <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/kronik_hastal_klar"
-                android:id="@+id/etKronik"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="@string/etNumara"
+                android:id="@+id/etNumara"
+                android:layout_weight="2">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <com.google.android.material.textfield.TextInputEditText
+        </EditText>
+        <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/gecirilen_hastaliklar"
-                android:id="@+id/etGecirilen"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/kan_grubu"
-                android:id="@+id/etKan"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/yak_n_ad"
+                android:hint="@string/etYakinadi"
                 android:id="@+id/etYakinAdi"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_weight="2">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <com.google.android.material.textfield.TextInputEditText
+        </EditText>
+
+        <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/yakin_kisinin_iletisim_bilgisi"
-                android:id="@+id/etYakinNumarasi"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:hint="@string/etYakinNum"
+                android:id="@+id/etYakinNum"
+                android:layout_weight="2"
+            >
+
+        </EditText>
 
         <Button
             android:layout_width="wrap_content"
@@ -156,6 +181,8 @@
             android:text="@string/btnProfilTamamla"
             android:id="@+id/btnProfilTamamla"
             android:onClick="clickp"
+            android:layout_weight="2"
+
             />
     </LinearLayout>
 </ScrollView>

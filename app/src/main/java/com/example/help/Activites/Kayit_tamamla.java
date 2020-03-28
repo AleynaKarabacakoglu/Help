@@ -12,10 +12,16 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.help.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -27,11 +33,19 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
 
     Bundle bnd3,bnd4;
     String enlem,boylam;
-    private EditText etKullanici,etMail,
-            etTC, etIlac, etKronik, etGecirilen,
-            etKan, etYakinAdi, etYakinNumarasi,
-            etCinsiyet;
+    private EditText Kullanici,
+            TC, Ilac,Kronik, Gecirilen,
+            YakinAdi, YakinNumarasi,Numara;
+    private TextView txtcinsiyet;
+    private Spinner spKan,spRh;
     FirebaseDatabase db2;
+    private RadioButton kadin,erkek;
+    private RadioGroup GroupCinsiyet;
+    String cinsiyet;
+    private String[] kan={"A","B","AB","0"};
+    private String [] rh={"+","-"};
+    private ArrayAdapter<String> dataAdapterForKan;
+    private ArrayAdapter<String> dataAdapterForRh;
 
     //private Button btnProfilTamamla;
     LocationManager konum_yoneticisi;
@@ -43,16 +57,20 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
     {
         //btnProfilTamamla = findViewById(R.id.btnProfilTamamla);
         db2=FirebaseDatabase.getInstance();
-        etKullanici = findViewById(R.id.etKullanici);
-        etMail = findViewById(R.id.etMail);
-        etTC = findViewById(R.id.etTC);
-        etIlac = findViewById(R.id.etIlac);
-        etKronik = findViewById(R.id.etKronik);
-        etGecirilen = findViewById(R.id.etGecirilen);
-        etKan = findViewById(R.id.etKan);
-        etYakinAdi = findViewById(R.id.etYakinAdi);
-        etYakinNumarasi = findViewById(R.id.etYakinNumarasi);
-        etCinsiyet = findViewById(R.id.etCinsiyet);
+        Kullanici = findViewById(R.id.etKullanici);
+        TC = findViewById(R.id.etTC);
+        Ilac = findViewById(R.id.etIlac);
+        Kronik = findViewById(R.id.etKronik);
+        Gecirilen = findViewById(R.id.etGecirilen);
+        YakinAdi = findViewById(R.id.etYakinAdi);
+        YakinNumarasi = findViewById(R.id.etYakinNum);
+        txtcinsiyet = findViewById(R.id.txtCinsiyet);
+        Numara=findViewById(R.id.etNumara);
+        kadin=findViewById(R.id.radioBtnKadin);
+        erkek=findViewById(R.id.radioBtnErkek);
+        GroupCinsiyet=findViewById(R.id.radioGroupCinsiyet);
+        spKan=findViewById(R.id.spinnerKan);
+        spRh=findViewById(R.id.spinnerRh);
     }
     private void profil_olustur(String tc,String ilac,String kronik, String gecirilen,String kan,String yakinadi,String yakinno,String cinsiyet)
     {
@@ -74,6 +92,45 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
         bnd3= new Bundle();
         bnd4= new Bundle();
         init();
+        //Spinner'lar için adapterleri hazırlıyoruz.
+        dataAdapterForKan = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, kan);
+        dataAdapterForRh = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,rh);
+
+        //Listelenecek verilerin görünümünü belirliyoruz.
+        dataAdapterForKan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapterForRh.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        //Hazırladğımız Adapter'leri Spinner'lara ekliyoruz.
+        spKan.setAdapter(dataAdapterForKan);
+        spRh.setAdapter(dataAdapterForRh);
+
+        // Listelerden bir eleman seçildiğinde yapılacakları tanımlıyoruz.
+        spKan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+
+                dataAdapterForKan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spKan.setAdapter(dataAdapterForKan);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }});
+        spRh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+
+                dataAdapterForRh.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spRh.setAdapter(dataAdapterForRh);
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         konum_yoneticisi = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -100,6 +157,20 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
 
 
     }
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        //int selectedId = GroupKan.getCheckedRadioButtonId();
+        boolean checked = ((RadioButton) view).isChecked();
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.radioBtnKadin:
+                if (checked) cinsiyet = "Kadin";
+                    break;
+            case R.id.radioBtnErkek:
+                if (checked) cinsiyet = "Erkek";
+                    break;
+
+        }}
 
 
 
@@ -152,38 +223,42 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
 
     public void clickp(View v)
     {
-        if (etKullanici.getText().toString().trim().equals(""))
-            etKullanici.setError("İsim soyisim boş bırakılamaz.");
-        else if (etTC.getText().toString().trim().equals(""))
-            etTC.setError("TC Kimlik Numarası boş bırakılamaz.");
-        else if (etCinsiyet.getText().toString().trim().equals(""))
-            etCinsiyet.setError("Cinsiyet boş bırakılamaz.");
-        else if (etIlac.getText().toString().trim().equals(""))
-            etIlac.setError("Kullanılan İlaç boş bırakılamaz.");
-        else if (etKronik.getText().toString().trim().equals(""))
-            etKronik.setError("Kronik Hastalıklar boş bırakılamaz.");
-        else if (etGecirilen.getText().toString().trim().equals(""))
-            etGecirilen.setError("Geçirilen Hastalıklar boş bırakılamaz.");
-        else if (etKan.getText().toString().trim().equals(""))
-            etKan.setError("Kan Grubu boş bırakılamaz.");
-        else if (etYakinAdi.getText().toString().trim().equals(""))
-            etYakinAdi.setError("Yakın Adı boş bırakılamaz.");
-        else if (etYakinNumarasi.getText().toString().trim().equals(""))
-            etYakinNumarasi.setError("Yakın Numarası boş bırakılamaz.");
+        if (Kullanici.getText().toString().trim().equals(""))
+            Kullanici.setError("İsim soyisim boş bırakılamaz.");
+        else if (TC.getText().toString().trim().equals(""))
+            TC.setError("TC Kimlik Numarası boş bırakılamaz.");
+        else if(TC.length() != 11)
+            TC.setError("Girilen TC 11 karakter olmalı!");
+        else if (!kadin.isChecked()&&!erkek.isChecked())
+                txtcinsiyet.setError("Lütfen seçim yapınız.");
+        else if (kadin.isChecked()&&erkek.isChecked())
+            txtcinsiyet.setError("Lütfen sadece birini seçiniz.");
+        else if (Ilac.getText().toString().trim().equals(""))
+            Ilac.setError("Kullanılan İlaç boş bırakılamaz.");
+        else if (Kronik.getText().toString().trim().equals(""))
+            Kronik.setError("Kronik Hastalıklar boş bırakılamaz.");
+        else if (Gecirilen.getText().toString().trim().equals(""))
+            Gecirilen.setError("Geçirilen Hastalıklar boş bırakılamaz.");
+
+        else if (YakinAdi.getText().toString().trim().equals(""))
+            YakinAdi.setError("Yakın Adı boş bırakılamaz.");
+        else if (YakinNumarasi.getText().toString().trim().equals(""))
+            YakinNumarasi.setError("Yakın Numarası boş bırakılamaz.");
         else {
 
-            String tc=etTC.getText().toString().trim();
-            String ilac=etIlac.getText().toString().trim();
-            String kronik=etKronik.getText().toString().trim();
-            String kan=etKan.getText().toString().trim();
-            String yakinadi=etYakinAdi.getText().toString().trim();
-            String yakinno=etYakinNumarasi.getText().toString().trim();
-            String gecirilen=etGecirilen.getText().toString().trim();
-            String cinsiyet=etCinsiyet.getText().toString().trim();
+            String tc=TC.getText().toString().trim();
+            String ilac=Ilac.getText().toString().trim();
+            String kronik=Kronik.getText().toString().trim();
+            //String kan=etKan.getText().toString().trim();
+            String kan="0";
+            String yakinadi=YakinAdi.getText().toString().trim();
+            String yakinno=YakinNumarasi.getText().toString().trim();
+            String gecirilen=Gecirilen.getText().toString().trim();
+
 
             profil_olustur(tc,ilac,kronik,gecirilen,kan,yakinadi,yakinno,cinsiyet);
             final Intent intent=new Intent(getApplicationContext(),Anasayfa.class);
-            bnd3.putString("enlem",enlem);
+            bnd3.putString("enlem",cinsiyet);
             intent.putExtras(bnd3);
             bnd4.putString("boylam",boylam);
             intent.putExtras(bnd4);
