@@ -47,7 +47,6 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
     private ArrayAdapter<String> dataAdapterForKan;
     private ArrayAdapter<String> dataAdapterForRh;
 
-    //private Button btnProfilTamamla;
     LocationManager konum_yoneticisi;
     String provider;
 
@@ -55,7 +54,7 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
 
     private void init()
     {
-        //btnProfilTamamla = findViewById(R.id.btnProfilTamamla);
+
         db2=FirebaseDatabase.getInstance();
         Kullanici = findViewById(R.id.etKullanici);
         TC = findViewById(R.id.etTC);
@@ -78,9 +77,6 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         dbRef.child(uid).setValue(new Kullanici(tc,ilac,kronik,gecirilen,kan,yakinadi,yakinno,cinsiyet));
 
-//        String key= dbRef.push().getKey();
-//        DatabaseReference dbRefYeni=db2.getReference().child("Kullanici_Bilgisi/"+key);
-//        dbRefYeni.setValue(new Kullanici(tc,ilac,kronik,gecirilen,kan,yakinadi,yakinno,cinsiyet));
     }
 
     @Override
@@ -111,8 +107,8 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
 
-                dataAdapterForKan.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spKan.setAdapter(dataAdapterForKan);
+                Toast.makeText(Kayit_tamamla.this, "Seçim yapıldı.",
+                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -124,8 +120,8 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
             public void onItemSelected(AdapterView<?> parent, View view,
                                        int position, long id) {
 
-                dataAdapterForRh.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spRh.setAdapter(dataAdapterForRh);
+                Toast.makeText(Kayit_tamamla.this, "Seçim yapıldı.",
+                        Toast.LENGTH_SHORT).show();
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -158,13 +154,12 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
 
     }
     public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
-        //int selectedId = GroupKan.getCheckedRadioButtonId();
+
         boolean checked = ((RadioButton) view).isChecked();
-        // Check which radio button was clicked
+
         switch(view.getId()) {
             case R.id.radioBtnKadin:
-                if (checked) cinsiyet = "Kadin";
+                if (checked) cinsiyet = "Kadın";
                     break;
             case R.id.radioBtnErkek:
                 if (checked) cinsiyet = "Erkek";
@@ -249,8 +244,7 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
             String tc=TC.getText().toString().trim();
             String ilac=Ilac.getText().toString().trim();
             String kronik=Kronik.getText().toString().trim();
-            //String kan=etKan.getText().toString().trim();
-            String kan="0";
+            String kan=spKan.getSelectedItem().toString()+spRh.getSelectedItem().toString();
             String yakinadi=YakinAdi.getText().toString().trim();
             String yakinno=YakinNumarasi.getText().toString().trim();
             String gecirilen=Gecirilen.getText().toString().trim();
