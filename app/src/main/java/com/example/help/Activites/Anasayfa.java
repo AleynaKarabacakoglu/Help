@@ -12,7 +12,6 @@ import android.widget.ImageButton;
 import android.telephony.SmsManager;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.help.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.OAuthProvider;
@@ -59,8 +58,15 @@ public class Anasayfa extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Kullanici kullanici = dataSnapshot.getValue(Kullanici.class);
                 txtalinanKullanici.append(kullanici.getTc() + "\n");
+                txtalinanKullanici.append(kullanici.getUsername() + "\n");
+                txtalinanKullanici.append(kullanici.getCinsiyet() + "\n");
+                txtalinanKullanici.append(kullanici.getNumara() + "\n");
+                txtalinanKullanici.append(kullanici.getKan() + "\n");
                 txtalinanKullanici.append(kullanici.getIlac() + "\n");
-
+                txtalinanKullanici.append(kullanici.getKronik() + "\n");
+                txtalinanKullanici.append(kullanici.getGecirilen() + "\n");
+                txtalinanKullanici.append(kullanici.getYakinadi()+ "\n");
+                txtalinanKullanici.append(kullanici.getYakinno()+ "\n");
 
             }
 

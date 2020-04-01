@@ -1,12 +1,12 @@
 package com.example.help.Activites;
 
 public class Kullanici {
-    private String username, password, email, tc, ilac, kronik, gecirilen, kan, yakinadi, yakinno, cinsiyet;
+    private String username, password, email, tc, ilac, kronik, gecirilen, kan, yakinadi, yakinno, cinsiyet,numara;
 
     private Kullanici() {
     }
 
-    public Kullanici(String tc, String ilac, String kronik, String gecirilen, String kan, String yakin_adi, String yakin_no, String cinsiyet) {
+    public Kullanici(String tc, String ilac, String kronik, String gecirilen, String kan, String yakin_adi, String yakin_no, String cinsiyet,String Numara) {
         this.tc = tc;
         this.ilac = ilac;
         this.kronik = kronik;
@@ -15,6 +15,7 @@ public class Kullanici {
         this.yakinadi = yakin_adi;
         this.yakinno = yakin_no;
         this.cinsiyet=cinsiyet;
+        this.numara=Numara;
     }
 
     public Kullanici(String username, String email, String password) {
@@ -110,6 +111,9 @@ public class Kullanici {
     public void setKan(String kan) {
         this.kan = kan;
     }
+
+    public void setNumara(String numara){this.numara=numara;}
+    public String getNumara(){return numara;}
 
 }
 

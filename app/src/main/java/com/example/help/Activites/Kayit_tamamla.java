@@ -71,11 +71,11 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
         spKan=findViewById(R.id.spinnerKan);
         spRh=findViewById(R.id.spinnerRh);
     }
-    private void profil_olustur(String tc,String ilac,String kronik, String gecirilen,String kan,String yakinadi,String yakinno,String cinsiyet)
+    private void profil_olustur(String tc,String ilac,String kronik, String gecirilen,String kan,String yakinadi,String yakinno,String cinsiyet,String numara)
     {
         DatabaseReference dbRef=db2.getReference().child("Kullanici_Bilgisi");
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        dbRef.child(uid).setValue(new Kullanici(tc,ilac,kronik,gecirilen,kan,yakinadi,yakinno,cinsiyet));
+        dbRef.child(uid).setValue(new Kullanici(tc,ilac,kronik,gecirilen,kan,yakinadi,yakinno,cinsiyet,numara));
 
     }
 
@@ -231,9 +231,9 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
         else if (Ilac.getText().toString().trim().equals(""))
             Ilac.setError("Kullanılan İlaç boş bırakılamaz.");
         else if (Kronik.getText().toString().trim().equals(""))
-            Kronik.setError("Kronik Hastalıklar boş bırakılamaz.");
+        Kronik.setError("Kronik Hastalıklar boş bırakılamaz.");
         else if (Gecirilen.getText().toString().trim().equals(""))
-            Gecirilen.setError("Geçirilen Hastalıklar boş bırakılamaz.");
+        Gecirilen.setError("Geçirilen Hastalıklar boş bırakılamaz.");
 
         else if (YakinAdi.getText().toString().trim().equals(""))
             YakinAdi.setError("Yakın Adı boş bırakılamaz.");
@@ -248,9 +248,10 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
             String yakinadi=YakinAdi.getText().toString().trim();
             String yakinno=YakinNumarasi.getText().toString().trim();
             String gecirilen=Gecirilen.getText().toString().trim();
+            String iletisim_num=Numara.getText().toString().trim();
 
 
-            profil_olustur(tc,ilac,kronik,gecirilen,kan,yakinadi,yakinno,cinsiyet);
+            profil_olustur(tc,ilac,kronik,gecirilen,kan,yakinadi,yakinno,cinsiyet,iletisim_num);
             final Intent intent=new Intent(getApplicationContext(),Anasayfa.class);
             bnd3.putString("enlem",cinsiyet);
             intent.putExtras(bnd3);
