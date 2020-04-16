@@ -71,11 +71,11 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
         spKan=findViewById(R.id.spinnerKan);
         spRh=findViewById(R.id.spinnerRh);
     }
-    private void profil_olustur(String tc,String ilac,String kronik, String gecirilen,String kan,String yakinadi,String yakinno,String cinsiyet,String numara)
+    private void profil_olustur(String isim,String tc,String ilac,String kronik, String gecirilen,String kan,String yakinadi,String yakinno,String cinsiyet,String numara)
     {
         DatabaseReference dbRef=db2.getReference().child("Kullanici_Bilgisi");
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        dbRef.child(uid).setValue(new Kullanici(tc,ilac,kronik,gecirilen,kan,yakinadi,yakinno,cinsiyet,numara));
+        dbRef.child(uid).setValue(new Kullanici(isim,tc,ilac,kronik,gecirilen,kan,yakinadi,yakinno,cinsiyet,numara));
 
     }
 
@@ -249,9 +249,10 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
             String yakinno=YakinNumarasi.getText().toString().trim();
             String gecirilen=Gecirilen.getText().toString().trim();
             String iletisim_num=Numara.getText().toString().trim();
+            String Isim=Kullanici.getText().toString().trim();
 
 
-            profil_olustur(tc,ilac,kronik,gecirilen,kan,yakinadi,yakinno,cinsiyet,iletisim_num);
+            profil_olustur(Isim,tc,ilac,kronik,gecirilen,kan,yakinadi,yakinno,cinsiyet,iletisim_num);
             final Intent intent=new Intent(getApplicationContext(),Anasayfa.class);
             bnd3.putString("enlem",cinsiyet);
             intent.putExtras(bnd3);

@@ -1,9 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activites.Profili_Duzenle">
+    android:fillViewport="true">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        tools:context=".Activites.Profili_Duzenle"
+        android:id="@+id/linearLayout"
+        android:layout_marginStart="1dp"
+        android:layout_marginLeft="1dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        android:gravity="center"
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        >
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/etKullanici"
+            android:id="@+id/etKullanici"
+            android:layout_weight="2"
+            >
+
+        </EditText>
+
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/etTC"
+            android:id="@+id/etTC"
+            android:layout_weight="2">
+
+        </EditText>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/txtCinsiyet"
+            android:id="@+id/txtCinsiyet"
+            android:layout_weight="1"
+            android:paddingLeft="8dp"
+            >
+        </TextView>
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:id="@+id/radioGroupCinsiyet"
+            android:layout_weight="1"
+            >
+            <RadioButton
+                android:id="@+id/radioBtnKadin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/radioBtnKadin"
+                android:layout_margin="10dp"
+                android:onClick="onRadioButtonClicked"
+                />
+
+            <RadioButton
+                android:id="@+id/radioBtnErkek"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/radioBtnErkek"
+                android:layout_margin="10dp"
+                android:onClick="onRadioButtonClicked"
+                />
+        </RadioGroup>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/etIlac"
+            android:id="@+id/etIlac"
+            android:layout_weight="2"
+            >
+
+        </EditText>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/etKronik"
+            android:id="@+id/etKronik"
+            android:layout_weight="2">
+
+        </EditText>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/etGecirilen"
+            android:id="@+id/etGecirilen"
+            android:layout_weight="2">
+
+        </EditText>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Kan"
+            android:paddingLeft="8dp"
+            >
+        </TextView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Spinner
+                android:id="@+id/spinnerKan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:hint="@string/spinnerKan"
+                android:layout_weight="2"
+                android:layout_margin="5dp"
+                >
+            </Spinner>
+            <Spinner
+                android:id="@+id/spinnerRh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:hint="@string/spinnerRh"
+                android:layout_weight="2"
+                android:layout_margin="5dp"
+                >
+            </Spinner>
+        </LinearLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/etNumara"
+            android:id="@+id/etNumara"
+            android:layout_weight="2">
+
+        </EditText>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/etYakinadi"
+            android:id="@+id/etYakinAdi"
+            android:layout_weight="2">
+
+        </EditText>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/etYakinNum"
+            android:id="@+id/etYakinNum"
+            android:layout_weight="2"
+            >
+
+        </EditText>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/btnProfilTamamla"
+            android:id="@+id/btnProfilTamamla"
+            android:onClick="clickprofilduzenle"
+            android:layout_weight="2"
+
+            />
+    </LinearLayout>
+</ScrollView>

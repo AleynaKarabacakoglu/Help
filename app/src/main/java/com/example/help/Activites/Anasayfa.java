@@ -47,6 +47,7 @@ public class Anasayfa extends AppCompatActivity {
     }
 
 
+
     private void kayitlariGetir() {
 
         txtalinanKullanici.setText("");
@@ -58,7 +59,7 @@ public class Anasayfa extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Kullanici kullanici = dataSnapshot.getValue(Kullanici.class);
                 txtalinanKullanici.append(kullanici.getTc() + "\n");
-                txtalinanKullanici.append(kullanici.getUsername() + "\n");
+                txtalinanKullanici.append(kullanici.getIsim()+"\n");
                 txtalinanKullanici.append(kullanici.getCinsiyet() + "\n");
                 txtalinanKullanici.append(kullanici.getNumara() + "\n");
                 txtalinanKullanici.append(kullanici.getKan() + "\n");
@@ -108,7 +109,7 @@ public class Anasayfa extends AppCompatActivity {
         btnProfilDuzenle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Anasayfa.this, Kayit_tamamla.class);
+                Intent i = new Intent(Anasayfa.this, Profili_Duzenle.class);
                 startActivity(i);
             }
 
