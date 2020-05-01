@@ -34,7 +34,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/kullan_c_ad"
+                android:hint="@string/userName"
                 android:id="@+id/userName"
                 />
         </com.google.android.material.textfield.TextInputLayout>
@@ -59,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Şifre"
-                android:id="@+id/passWord"
+                android:id="@+id/password"
                 android:inputType="textPassword"
                 />
         </com.google.android.material.textfield.TextInputLayout>

@@ -34,6 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/help"
+            android:onClick="onClickHelp"
             />
 
         <TextView
@@ -58,9 +59,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/alinanCinsiyet"
             android:textSize="18sp"
-            android:id="@+id/alinanCinsiyet"
+            android:id="@+id/konum"
             >
         </TextView>
 
@@ -72,6 +72,7 @@
             android:layout_marginRight="20dp"
             android:text="@string/btnProfilDuzenle"
             app:cornerRadius="10dp"
+            android:onClick="onClickProfilEdit"
         />
 
         <Button
@@ -82,6 +83,7 @@
             android:layout_marginRight="20dp"
             android:text="@string/btnCikis"
             app:cornerRadius="10dp"
+            android:onClick="onClickExit"
             />
 
     </LinearLayout>

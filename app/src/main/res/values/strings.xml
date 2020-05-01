@@ -9,8 +9,12 @@
     <string name="btnBilgi">BİZ KİMİZ?</string>
     <string name="alinanKullanici"></string>
     <string name="btnProfilDuzenle">PROFİL DÜZENLE</string>
-    <string name="kullan_c_ad">Kullanıcı Adı</string>
     <string name="e_mail">E-mail</string>
+    <string name="password"></string>
+    <string name="btnNewUser"></string>
+    <string name="userName">Kullanici adi</string>
+
+
 
 
 

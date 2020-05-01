@@ -31,7 +31,7 @@ public class Kayit extends AppCompatActivity {
         db= FirebaseDatabase.getInstance();
         btnNewUser=findViewById(R.id.btnNewUser);
         etEmail=findViewById(R.id.email);
-        etPassWord=findViewById(R.id.passWord);
+        etPassWord=findViewById(R.id.password);
         etUserName=findViewById(R.id.userName);
         fAuth=FirebaseAuth.getInstance();
 

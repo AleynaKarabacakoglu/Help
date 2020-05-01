@@ -2,8 +2,12 @@ package com.example.help.Activites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,20 +24,26 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 
 
-public class Anasayfa extends AppCompatActivity {
+public class Anasayfa extends AppCompatActivity implements LocationListener  {
 
     private static final String TAG = "Anasayfa";
     private ImageButton btnHelp;
     private Button btnCikis, btnProfilDuzenle;
-    public TextView txtalinanKullanici,txtcinsiyet;
-    String alinanMesaj, alinanMesaj2;
+    public TextView txtalinanKullanici,txtkonum;
     String alinanEnlem;
     String alinanBoylam;
-    String konum;
+    String konum,enlem,boylam;
+
     FirebaseDatabase db2;
     FirebaseAuth fAuth;
+    LocationManager konum_yoneticisi;
+    String provider;
 
     private void init() {
         db2 = FirebaseDatabase.getInstance();
@@ -42,7 +52,8 @@ public class Anasayfa extends AppCompatActivity {
         btnProfilDuzenle = findViewById(R.id.btnProfilDuzenle);
         txtalinanKullanici = findViewById(R.id.alinanKullanici);
         fAuth = FirebaseAuth.getInstance();
-        txtcinsiyet=findViewById(R.id.alinanCinsiyet);
+        txtkonum=findViewById(R.id.konum);
+        enlem="sila";
 
     }
 
@@ -83,61 +94,114 @@ public class Anasayfa extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.anasayfa);
         init();
-        Intent al = getIntent();
-//         alinanMesaj=al.getStringExtra("veri");//burada diğer sayfadan veri almak
-//         alinanMesaj2=al.getStringExtra("veri2");//için parametre olarak
-        alinanBoylam = al.getStringExtra("boylam");//tanımlanan keyler girildi.
-        alinanEnlem = al.getStringExtra("enlem");
-        konum = alinanEnlem ;//+ "  " + alinanBoylam;
-        txtcinsiyet.setText(konum);
         kayitlariGetir();
-//
-//        txtalinanKullanici.setText(konum);
+        txtkonum.setText("djnfgkjdfkj");
+        konum_yoneticisi = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        provider = konum_yoneticisi.getBestProvider(criteria, false);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            return;
+        }
+        Location lokasyon = konum_yoneticisi.getLastKnownLocation(provider);
 
-        //Anasayfadan çıkış yapmak için çıkış butonu eklendi.
-        btnCikis.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Anasayfa.this, Giris.class);
-                FirebaseAuth.getInstance().signOut();
-                startActivity(i);
-            }
+        if (lokasyon != null)
+        {
 
-        });
+        }
+        else {
+            txtkonum.setText("NotAvaliable");
 
-        //ProfiliDüzenle butonuyla Kayıt_tamamla sayfasına geçiş
-        btnProfilDuzenle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(Anasayfa.this, Profili_Duzenle.class);
-                startActivity(i);
-            }
+            // txtBoylam.setText("Not Avaiable");
+            enlem="not";
+            boylam="not";
+        }
 
-        });
-
-        //Help butonuna basıldığında kullanıcıya giden3 mesaj
-        btnHelp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String telNo = "05445038639";//mesaj gönderilecek numara
-
-                try {
-                    SmsManager smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(telNo, null, konum, null, null);
-                    // smsManager.sendTextMessage(telNo, null, alinanMesaj, null, null);
-                    //smsManager.sendTextMessage(telNo, null, alinanMesaj2, null, null);
-                    Toast.makeText(getApplicationContext(), "Mesajınız İletildi!",
-                            Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(),
-                            "Mesajınız gönderilemedi. Lütfen tekrar deneyiniz.",
-                            Toast.LENGTH_LONG).show();
-                    Log.e(TAG, "onClick: ",e );
-
-                    e.printStackTrace();
-                }
-
-            }
-        });
     }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
+                (this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            return;
+        }
+        konum_yoneticisi.requestLocationUpdates(provider, 10, 1, (LocationListener) this);
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        konum_yoneticisi.removeUpdates((LocationListener) this);
+    }
+    @Override
+    public void onLocationChanged(Location location)
+    {
+        double lat=location.getLatitude();//enlem bilgisi çekildi
+        double log=location.getLongitude();//boylam bilgisi çekildi
+        enlem=String.valueOf(lat);//enlemi doubledan stringe çevirdik.
+        boylam=String.valueOf(log);
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras)
+    {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider)
+    {
+        Toast.makeText(this,"aktif ",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onProviderDisabled(String provider)
+    {
+        Toast.makeText(this,"pasif ",Toast.LENGTH_SHORT).show();
+    }
+
+        public void onClickHelp(View v) {
+            String telNo = "05445038639";//mesaj gönderilecek numara
+            txtkonum.setText(enlem);
+
+            try {
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(telNo, null, "aaa", null, null);
+
+                Toast.makeText(getApplicationContext(), "Mesajınız İletildi!",
+                        Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(),
+                        "Mesajınız gönderilemedi. Lütfen tekrar deneyiniz.",
+                        Toast.LENGTH_LONG).show();
+                Log.e(TAG, "onClick: ",e );
+
+                e.printStackTrace();
+            }
+
+
+        }
+
+        public void onClickExit(View v) {
+            Intent i = new Intent(Anasayfa.this, Giris.class);
+            FirebaseAuth.getInstance().signOut();
+            startActivity(i);
+        }
+
+
+
+        public void onClickProfilEdit(View v) {
+            Intent i = new Intent(Anasayfa.this, Profili_Duzenle.class);
+            startActivity(i);
+        }
+
+
 }
