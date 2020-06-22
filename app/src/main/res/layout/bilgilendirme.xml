@@ -74,7 +74,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="5dp"
                 android:gravity="center"
-                android:text="Merhabalar biz acil durumlarda en kısa sürede yardımınıza koşmak için varız. Öncelikle size   en kısa ve en iyi şekilde ulaşmak için, profil bilgilerinizi tamamlamalısınız. Daha sonra anasayfaya erişebilirsiniz. Yangın, hastalık, hırsızlık, cinayet, yaralama, kaza gibi durumlarda HELP butonuna tıklamanız yeterlidir."
+                android:text="Merhabalar biz acil durumlarda en kısa sürede yardımınıza koşmak için varız. Öncelikle size   en kısa ve en iyi şekilde ulaşmak için, profil bilgilerinizi tamamlamalısınız. Daha sonra anasayfaya erişebilirsiniz. Yangın, hastalık, hırsızlık, cinayet, yaralama, kaza gibi durumlarda gerekli butonuna tıklamanız yeterlidir. Butona tıklamanız halinde kişisel bilgileriniz ve konumunuz gerekli kuruma iletilecektir."
                 android:textSize="18sp"
                 />
 

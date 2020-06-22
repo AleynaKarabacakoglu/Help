@@ -13,6 +13,10 @@
     <string name="password"></string>
     <string name="btnNewUser"></string>
     <string name="userName">Kullanici adi</string>
+    <string name="btnFireman"></string>
+    <string name="btnDoctor"></string>
+    <string name="btnCFriend"></string>
+    <string name="btnPolice"></string>
 
 
 
