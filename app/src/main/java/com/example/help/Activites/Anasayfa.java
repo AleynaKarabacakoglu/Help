@@ -41,7 +41,7 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
 
     private static final String TAG = "Anasayfa";
     public TextView txtalinanKullanici,txtkonum;
-    String konum,enlem,boylam,hastane;
+    String konum,enlem,boylam,hastane,hastaneNumarasi;
     FirebaseDatabase db2;
     FirebaseAuth fAuth;
     LocationManager konum_yoneticisi;
@@ -133,6 +133,12 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
     public void setHastane(String Hastane) {
         this.hastane = Hastane;
     }
+    public String getHastaneNumarasi() {
+        return hastaneNumarasi;
+    }
+    public void setHastaneNumarasi(String HastaneNumarasi) {
+        this.hastaneNumarasi = HastaneNumarasi;
+    }
 
     private void init()
     {
@@ -141,10 +147,12 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
         fAuth = FirebaseAuth.getInstance();
         txtkonum=findViewById(R.id.konum);
         mqueue = Volley.newRequestQueue(this);
+
     }
     //******** FIREBASEDEN  KULLANICI BİLGİLERİ CEKİLDİ*******************
     private void kayitlariGetir()
     {
+
         String uid = fAuth.getUid();
         DatabaseReference dbGelenler = db2.getReference().child("Kullanici_Bilgisi").child(uid);
         dbGelenler.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -163,6 +171,7 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
                 setKronik(kullanici.getKronik());
                 setYakinadi(kullanici.getYakinadi());
 
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -170,16 +179,16 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
             }
         });
     }
-    private void HastaneKayitlari()
+    /*public void HastaneKayitlari(String value)
     {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Hastaneler");
+        EnYakinHastane();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Kurulus").child("Hastaneler").child(value).child("Numara");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot snapshot: dataSnapshot.getChildren())
-                {
-                    txtalinanKullanici.append(snapshot.getValue().toString());
-                }
+
+
+                    txtalinanKullanici.append(dataSnapshot.getValue().toString());
 
 
             }
@@ -188,7 +197,7 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
 
             }
         });
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {//bundle aktiviteler arası geçişi sağlar
@@ -196,8 +205,8 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
         setContentView(R.layout.anasayfa);
         init();
         kayitlariGetir();
-        HastaneKayitlari();
-        EnYakinHastane();
+        setKonum("null");
+        setHastaneNumarasi("null");
 
         konum_yoneticisi = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -220,6 +229,7 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
             boylam="not";
         }
         JsonParse();
+        EnYakinHastaneNumarasi();
 
     }
 
@@ -297,33 +307,47 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
         }
     public void onClickDoctor(View v) {
 
-        String telNo = "05445038639";//mesaj gönderilecek numara
+        EnYakinHastaneNumarasi();
+        if(getHastaneNumarasi()!="null")
+        {
+            try {
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(getHastaneNumarasi(), null, "isim:"+getIsim()+" TC:"+getTc()+" Kan:"+getKan(), null, null);
+                smsManager.sendTextMessage(getHastaneNumarasi(), null, " Cinsiyet:"+getCinsiyet() +" Kullanilan Ilac:"+getIlac(), null, null);
+                smsManager.sendTextMessage(getHastaneNumarasi(), null, "Enlem:"+getEnlem()+" Boylam:"+getBoylam(), null, null);
 
+                Toast.makeText(getApplicationContext(), "Mesajınız İletildi!",
+                        Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(),
+                        "Mesajınız gönderilemedi. Lütfen tekrar deneyiniz.",
+                        Toast.LENGTH_LONG).show();
+                Log.e(TAG, "onClick: ",e );
 
-        try {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(telNo, null, "isim:"+getIsim()+" TC:"+getTc()+" Kan:"+getKan(), null, null);
-            smsManager.sendTextMessage(telNo, null, " Cinsiyet:"+getCinsiyet() +" Kullanilan Ilac:"+getIlac(), null, null);
-            smsManager.sendTextMessage(telNo, null, "Enlem:"+getEnlem()+" Boylam:"+getBoylam(), null, null);
+                e.printStackTrace();
+            }
 
-            Toast.makeText(getApplicationContext(), "Mesajınız İletildi!",
-                    Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(),
-                    "Mesajınız gönderilemedi. Lütfen tekrar deneyiniz.",
-                    Toast.LENGTH_LONG).show();
-            Log.e(TAG, "onClick: ",e );
-
-            e.printStackTrace();
         }
+        else
+            {
+                Toast.makeText(Anasayfa.this,"Lütfen tekrar deneyiniz",Toast.LENGTH_SHORT).show();
+            }
+
+
+
 
 
     }
     public void onClickFireman(View v) {
 
-        String telNo = "05445038639";//mesaj gönderilecek numara
+
+        String telNo;
+
         //txtkonum.setText(enlem+"   "+boylam);
-        EnYakinHastane();
+        EnYakinHastaneNumarasi();
+        telNo=txtalinanKullanici.toString();
+
+        Toast.makeText(Anasayfa.this,"-"+telNo+"-",Toast.LENGTH_SHORT).show();
 
 
         /*try {
@@ -347,23 +371,32 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
     {
         kayitlariGetir();
         String telNo = getYakinnum();
+
         JsonParse();
+        if(getKonum()!="null")
+        {
+            try {
+                SmsManager smsManager = SmsManager.getDefault();
+                //smsManager.sendTextMessage(telNo, null, "Acil Durum!! Arkadaşın "+getİsim()+" zor durumda.", null, null);
+                smsManager.sendTextMessage(telNo, null, "Yardım! Anlık Konumum:"+getKonum(), null, null);
 
-        try {
-            SmsManager smsManager = SmsManager.getDefault();
-            //smsManager.sendTextMessage(telNo, null, "Acil Durum!! Arkadaşın "+getİsim()+" zor durumda.", null, null);
-            smsManager.sendTextMessage(telNo, null, "Anlık Konumum"+getKonum(), null, null);
+                Toast.makeText(getApplicationContext(), "Mesajınız İletildi!",
+                        Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(),
+                        "Mesajınız gönderilemedi. Lütfen tekrar deneyiniz.",
+                        Toast.LENGTH_LONG).show();
+                Log.e(TAG, "onClick: ",e );
 
-            Toast.makeText(getApplicationContext(), "Mesajınız İletildi!",
-                    Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(),
-                    "Mesajınız gönderilemedi. Lütfen tekrar deneyiniz.",
-                    Toast.LENGTH_LONG).show();
-            Log.e(TAG, "onClick: ",e );
-
-            e.printStackTrace();
+                e.printStackTrace();
+            }
         }
+        else
+            {
+            Toast.makeText(Anasayfa.this,"Lütfen tekrar deneyiniz",Toast.LENGTH_SHORT).show();
+            }
+
+
 
 
     }
@@ -401,6 +434,8 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
                     adres=location.getJSONObject("address");
                     text=adres.getString("text");
                     setKonum(text);
+                    //Toast.makeText(Anasayfa.this,getKonum(),Toast.LENGTH_SHORT).show();
+
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -417,7 +452,7 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
         });
         mqueue.add(request);
     }
-    private void EnYakinHastane() {
+    private void EnYakinHastaneNumarasi() {
         Log.d(TAG, "JsonParse: BU METOD ÇALIŞTI");
         String appid="wVxKmYyJpPqAGATc5I4Y"; //hereapi id
         String url = "https://places.ls.hereapi.com/places/v1/discover/search?at="+getEnlem()+"%2C"+getBoylam()+"&q=hospital&Accept-Language=tr-tr&app_id="+appid+"&app_code=dZ3Wqao7oizHlwYefK4nkQ";
@@ -434,7 +469,25 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
                     title=jsonArray.getJSONObject(0);
                     setHastane(title.getString("title"));
 
-                    Toast.makeText(Anasayfa.this,getHastane(),Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Anasayfa.this,getHastane(),Toast.LENGTH_SHORT).show();
+                    //*****************FIREBASE REELTIME DATABASE'DEN EN YAKIN HASTANE NUMARASI CEKKILDI***********
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Kurulus").child("Hastaneler").child(getHastane()).child("Numara");
+                    reference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                            //txtalinanKullanici.append(dataSnapshot.getValue().toString());
+                            setHastaneNumarasi(dataSnapshot.getValue().toString());
+
+
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                    //*******************************************************************************************
 
                 } catch (JSONException e) {
                     e.printStackTrace();
