@@ -41,7 +41,7 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
 
     private static final String TAG = "Anasayfa";
     public TextView txtalinanKullanici,txtkonum;
-    String konum,enlem,boylam,hastane,hastaneNumarasi;
+    String konum,enlem,boylam,hastane,hastaneNumarasi,polis,polisNumarasi;
     FirebaseDatabase db2;
     FirebaseAuth fAuth;
     LocationManager konum_yoneticisi;
@@ -139,6 +139,18 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
     public void setHastaneNumarasi(String HastaneNumarasi) {
         this.hastaneNumarasi = HastaneNumarasi;
     }
+    public String getPolis() {
+        return polis;
+    }
+    public void setPolis(String Polis) {
+        this.polis = Polis;
+    }
+    public String getPolisNumarasi() {
+        return polisNumarasi;
+    }
+    public void setPolisNumarasi(String PolisNumarasi) {
+        this.polisNumarasi = PolisNumarasi;
+    }
 
     private void init()
     {
@@ -147,7 +159,6 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
         fAuth = FirebaseAuth.getInstance();
         txtkonum=findViewById(R.id.konum);
         mqueue = Volley.newRequestQueue(this);
-
     }
     //******** FIREBASEDEN  KULLANICI BİLGİLERİ CEKİLDİ*******************
     private void kayitlariGetir()
@@ -179,25 +190,6 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
             }
         });
     }
-    /*public void HastaneKayitlari(String value)
-    {
-        EnYakinHastane();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Kurulus").child("Hastaneler").child(value).child("Numara");
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-
-                    txtalinanKullanici.append(dataSnapshot.getValue().toString());
-
-
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {//bundle aktiviteler arası geçişi sağlar
@@ -207,6 +199,7 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
         kayitlariGetir();
         setKonum("null");
         setHastaneNumarasi("null");
+        setPolisNumarasi("null");
 
         konum_yoneticisi = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -230,6 +223,7 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
         }
         JsonParse();
         EnYakinHastaneNumarasi();
+        EnYakinPolis();
 
     }
 
@@ -282,15 +276,15 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
         Toast.makeText(this,"pasif ",Toast.LENGTH_SHORT).show();
     }
 
-        public void onClickPolice(View v) {
+    public void onClickPolice(View v) {
 
-            String telNo = "05445038639";//mesaj gönderilecek numara
-
-
+        EnYakinPolis();
+        if(getPolisNumarasi()!="null")
+        {
             try {
                 SmsManager smsManager = SmsManager.getDefault();
-                smsManager.sendTextMessage(telNo, null, getIsim()+" zor durumda!", null, null);
-                smsManager.sendTextMessage(telNo, null, "Anlik Konum: (enlem:"+enlem+") (boylam:"+getBoylam()+")", null, null);
+                //smsManager.sendTextMessage(getPolisNumarasi(), null, getIsim()+" zor durumda!", null, null);
+                smsManager.sendTextMessage(getPolisNumarasi(), null, "Anlik Konum: (enlem:"+enlem+") (boylam:"+getBoylam()+")", null, null);
 
                 Toast.makeText(getApplicationContext(), "Mesajınız İletildi!",
                         Toast.LENGTH_LONG).show();
@@ -305,6 +299,14 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
 
 
         }
+
+        else
+        {
+            Toast.makeText(Anasayfa.this,"Lütfen tekrar deneyiniz",Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
     public void onClickDoctor(View v) {
 
         EnYakinHastaneNumarasi();
@@ -395,10 +397,6 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
             {
             Toast.makeText(Anasayfa.this,"Lütfen tekrar deneyiniz",Toast.LENGTH_SHORT).show();
             }
-
-
-
-
     }
 
         public void onClickExit(View v) {
@@ -468,7 +466,6 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
                     jsonArray = results.getJSONArray("items");
                     title=jsonArray.getJSONObject(0);
                     setHastane(title.getString("title"));
-
                     //Toast.makeText(Anasayfa.this,getHastane(),Toast.LENGTH_SHORT).show();
                     //*****************FIREBASE REELTIME DATABASE'DEN EN YAKIN HASTANE NUMARASI CEKKILDI***********
                     DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Kurulus").child("Hastaneler").child(getHastane()).child("Numara");
@@ -492,17 +489,63 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-
             }
         });
         mqueue.add(request);
     }
+    private void EnYakinPolis() {
+        Log.d(TAG, "JsonParse: BU METOD ÇALIŞTI");
+        String appid="wVxKmYyJpPqAGATc5I4Y"; //hereapi id
+        String url = "https://places.ls.hereapi.com/places/v1/discover/search?at="+getEnlem()+"%2C"+getBoylam()+"&q=police&Accept-Language=tr-tr&app_id="+appid+"&app_code=dZ3Wqao7oizHlwYefK4nkQ";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                JSONObject results;
+                JSONArray jsonArray = null;
+                JSONObject title;
 
+                try {
+                    results=response.getJSONObject("results");
+                    jsonArray = results.getJSONArray("items");
+                    title=jsonArray.getJSONObject(0);
+                    setPolis(title.getString("title"));
+                    //Toast.makeText(Anasayfa.this,getHastane(),Toast.LENGTH_SHORT).show();
+                    //*****************FIREBASE REELTIME DATABASE'DEN EN YAKIN POLIS NUMARASI CEKKILDI***********
+                    DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Kurulus").child("Polis").child(getPolis()).child("Numara");
+                    reference.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                            //txtalinanKullanici.append(dataSnapshot.getValue().toString());
+                            setPolisNumarasi((dataSnapshot.getValue().toString()));
+
+
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                    //*******************************************************************************************
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        mqueue.add(request);
+    }
 }
