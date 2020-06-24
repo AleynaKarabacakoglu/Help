@@ -41,7 +41,7 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
 
     private static final String TAG = "Anasayfa";
     public TextView txtalinanKullanici,txtkonum;
-    String konum,enlem,boylam,hastane,hastaneNumarasi,polis,polisNumarasi;
+    String konum,enlem,boylam,sehir,hastane,hastaneNumarasi,polis,polisNumarasi,itfaiyeNumarasi;
     FirebaseDatabase db2;
     FirebaseAuth fAuth;
     LocationManager konum_yoneticisi;
@@ -151,6 +151,18 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
     public void setPolisNumarasi(String PolisNumarasi) {
         this.polisNumarasi = PolisNumarasi;
     }
+    public String getSehir() {
+        return sehir;
+    }
+    public void setSehir(String Sehir) {
+        this.sehir = Sehir;
+    }
+    public String getItfaiyeNumarasi() {
+        return itfaiyeNumarasi;
+    }
+    public void setItfaiyeNumarasi(String ItfaiyeNumarasi) {
+        this.itfaiyeNumarasi = ItfaiyeNumarasi;
+    }
 
     private void init()
     {
@@ -200,6 +212,8 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
         setKonum("null");
         setHastaneNumarasi("null");
         setPolisNumarasi("null");
+        setSehir("null");
+        setItfaiyeNumarasi("null");
 
         konum_yoneticisi = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         Criteria criteria = new Criteria();
@@ -222,8 +236,10 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
             boylam="not";
         }
         JsonParse();
+        EnyakinItfaiye();
         EnYakinHastaneNumarasi();
         EnYakinPolis();
+
 
     }
 
@@ -252,8 +268,6 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
         double lat=location.getLatitude();//enlem bilgisi çekildi
         double log=location.getLongitude();//boylam bilgisi çekildi
         setEnlem(String.valueOf(lat));
-        //enlem=String.valueOf(lat);//enlemi doubledan stringe çevirdik.
-        //boylam=String.valueOf(log);
         setBoylam(String.valueOf(log));
 
     }
@@ -343,29 +357,32 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
     public void onClickFireman(View v) {
 
 
-        String telNo;
+        EnyakinItfaiye();
+        if(getItfaiyeNumarasi()!="null")
+        {
+            try {
+                SmsManager smsManager = SmsManager.getDefault();
+                smsManager.sendTextMessage(getItfaiyeNumarasi(), null, "Enlem:"+getEnlem()+" Boylam:"+getBoylam(), null, null);
 
+                Toast.makeText(getApplicationContext(), "Mesajınız İletildi!",
+                        Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(),
+                        "Mesajınız gönderilemedi. Lütfen tekrar deneyiniz.",
+                        Toast.LENGTH_LONG).show();
+                Log.e(TAG, "onClick: ",e );
+
+                e.printStackTrace();
+            }
+        }
         //txtkonum.setText(enlem+"   "+boylam);
-        EnYakinHastaneNumarasi();
-        telNo=txtalinanKullanici.toString();
+        else
+        {
+            Toast.makeText(Anasayfa.this,"Lütfen tekrar deneyiniz",Toast.LENGTH_SHORT).show();
+        }
 
-        Toast.makeText(Anasayfa.this,"-"+telNo+"-",Toast.LENGTH_SHORT).show();
 
 
-        /*try {
-            SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(telNo, null, "Enlem:"+getEnlem()+" Boylam:"+getBoylam(), null, null);
-
-            Toast.makeText(getApplicationContext(), "Mesajınız İletildi!",
-                    Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(),
-                    "Mesajınız gönderilemedi. Lütfen tekrar deneyiniz.",
-                    Toast.LENGTH_LONG).show();
-            Log.e(TAG, "onClick: ",e );
-
-            e.printStackTrace();
-        }*/
 
 
     }
@@ -425,13 +442,16 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
                 JSONObject location;
                 JSONObject adres;
                 String text;
+                String stateCode;
                 try {
                     jsonArray = response.getJSONObject("search");
                     context=jsonArray.getJSONObject("context");
                     location=context.getJSONObject("location");
                     adres=location.getJSONObject("address");
                     text=adres.getString("text");
+                    stateCode=adres.getString("stateCode");
                     setKonum(text);
+                    setSehir(stateCode);
                     //Toast.makeText(Anasayfa.this,getKonum(),Toast.LENGTH_SHORT).show();
 
 
@@ -547,5 +567,33 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
             }
         });
         mqueue.add(request);
+    }
+    private void EnyakinItfaiye()
+    {
+
+        JsonParse();
+        if(getHastaneNumarasi()!="null")
+        {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Kurulus").child("İtfaiye").child(getSehir()+" İtfaiyesi").child("Numara");
+            reference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+
+                    //txtalinanKullanici.append(dataSnapshot.getValue().toString());
+                    setItfaiyeNumarasi((dataSnapshot.getValue().toString()));
+
+
+                }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        }
+        else
+        {
+        }
+
     }
 }
