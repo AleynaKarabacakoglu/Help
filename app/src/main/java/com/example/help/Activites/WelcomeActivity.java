@@ -2,11 +2,9 @@ package com.example.help.Activites;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-
 import com.example.help.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -52,11 +50,12 @@ public class WelcomeActivity extends AppCompatActivity {
                             Log.d(TAG, "onDataChange: ");
                             Kullanici kullanici = dataSnapshot.getValue(Kullanici.class);
                             if (kullanici != null) {
-                                // Kullancıı bilgileri doldurmuş
+                                // Kullancıı bilgileri doldurmuş ise Anasayfaya geçis yapilir.
                                 Intent i = new Intent(WelcomeActivity.this, Anasayfa.class);
                                 finish();
                                 startActivity(i);
                             } else {
+                                //kullanici profil bilgilerini doldurmamıs ise bilgilendirme sayfasina gecilir.
                                 Intent i = new Intent(WelcomeActivity.this, Bilgilendirme.class);
                                 finish();
                                 startActivity(i);
@@ -66,21 +65,17 @@ public class WelcomeActivity extends AppCompatActivity {
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
                             Log.d(TAG, "onCancelled: ");
-
                         }
                     });
-
-                } else {
+                }
+                else {
+                    //kullanıcı oturumunu kapatmıs veya daha önce hic hesap olusturmamıs ise giris sayfasına gecilir.
                     Log.d(TAG, "onAuthStateChanged: currentuser null");
                     Intent i = new Intent(WelcomeActivity.this, Giris.class);
                     finish();
                     startActivity(i);
                 }
-
-//
-
             }
         };
-
     }
 }

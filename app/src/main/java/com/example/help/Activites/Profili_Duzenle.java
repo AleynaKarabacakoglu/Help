@@ -38,11 +38,8 @@ public class Profili_Duzenle extends AppCompatActivity {
     private ArrayAdapter<String> dataAdapterForRh;
     FirebaseAuth fAuth;
 
-
-
     private void init()
     {
-
         db2=FirebaseDatabase.getInstance();
         Kullanici = findViewById(R.id.etKullanici);
         TC = findViewById(R.id.etTC);

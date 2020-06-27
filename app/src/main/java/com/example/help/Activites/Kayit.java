@@ -8,7 +8,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-//import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.example.help.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,18 +33,13 @@ public class Kayit extends AppCompatActivity {
         etPassWord=findViewById(R.id.password);
         etUserName=findViewById(R.id.userName);
         fAuth=FirebaseAuth.getInstance();
-
-
     }
 
     private void kullanici_kaydet(String username,String email, String password)
     {
         DatabaseReference dbRef=db.getReference("Kullanicilar");
         String uid = fAuth.getUid();
-//        String key= dbRef.push().getKey();
         dbRef.child(uid).setValue(new Kullanici(username,email,password));
-//        DatabaseReference dbRefYeni=db.getReference("Kullanicilar/"+key);
-//        dbRefYeni.setValue(new Kullanici(username,email,password));
     }
 
     @Override
@@ -60,11 +54,9 @@ public class Kayit extends AppCompatActivity {
             startActivity(i);
             finish();
         }
-        btnNewUser.setOnClickListener(new View.OnClickListener()
-        {
+        btnNewUser.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v)
-            {
+            public void onClick(View v) {
                 user= etUserName.getText().toString().trim();
                 email= etEmail.getText().toString().trim();
                 password= etPassWord.getText().toString().trim();
@@ -93,7 +85,6 @@ public class Kayit extends AppCompatActivity {
                             kullanici_kaydet(user,email,password);
                             Intent i = new Intent(Kayit.this, Bilgilendirme.class);
                             startActivity(i);
-
                         }
                         else
                             {

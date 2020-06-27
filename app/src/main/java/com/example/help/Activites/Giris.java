@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
-//import android.util.Log;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -21,17 +20,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-//import com.google.firebase.firestore.DocumentSnapshot;
-//import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class Giris extends AppCompatActivity  {
 
-
     private Button btnKyt, btnGiris, btnGirisYap;
     private LinearLayout girisLayout;
     private EditText etMail, etSifre;
-   // private FirebaseFirestore firebaseFirestore;
     private static final String TAG = "Giris";
     FirebaseAuth fAuth;
 
@@ -50,20 +45,6 @@ public class Giris extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.giris);
         init();
-        /*firebaseFirestore = FirebaseFirestore.getInstance();
-        firebaseFirestore.collection("A").document("B").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                Log.d(TAG, "onComplete: ");
-                if (task.isSuccessful()) {
-                    Aleyna aleyna = task.getResult().toObject(Aleyna.class);
-                    Log.d(TAG, "onComplete: "+task.getResult().toString());
-
-                }
-                else
-                    Log.d(TAG, "onComplete: "+task.getException().toString());
-            }
-        });*/
 
         btnGiris.setOnClickListener(new View.OnClickListener()
                                     {

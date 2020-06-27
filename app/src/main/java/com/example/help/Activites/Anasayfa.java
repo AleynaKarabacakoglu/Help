@@ -10,8 +10,6 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.telephony.SmsManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,7 +33,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.gson.JsonObject;
 
 public class Anasayfa extends AppCompatActivity implements LocationListener  {
 
@@ -175,14 +172,13 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
     //******** FIREBASEDEN  KULLANICI BİLGİLERİ CEKİLDİ*******************
     private void kayitlariGetir()
     {
-
         String uid = fAuth.getUid();
         DatabaseReference dbGelenler = db2.getReference().child("Kullanici_Bilgisi").child(uid);
         dbGelenler.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Kullanici kullanici = dataSnapshot.getValue(Kullanici.class);
-                //txtalinanKullanici.append(kullanici.getTc() + "\n");
+
                 setIsim(kullanici.getIsim());
                 setTc(kullanici.getTc());
                 setCinsiyet(kullanici.getCinsiyet());
@@ -193,8 +189,6 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
                 setGecirilen(kullanici.getGecirilen());
                 setKronik(kullanici.getKronik());
                 setYakinadi(kullanici.getYakinadi());
-
-
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -240,7 +234,6 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
         EnYakinHastaneNumarasi();
         EnYakinPolis();
 
-
     }
 
     @Override
@@ -269,7 +262,6 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
         double log=location.getLongitude();//boylam bilgisi çekildi
         setEnlem(String.valueOf(lat));
         setBoylam(String.valueOf(log));
-
     }
 
     @Override
@@ -291,7 +283,6 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
     }
 
     public void onClickPolice(View v) {
-
         EnYakinPolis();
         if(getPolisNumarasi()!="null")
         {
@@ -310,15 +301,11 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
 
                 e.printStackTrace();
             }
-
-
         }
-
         else
         {
             Toast.makeText(Anasayfa.this,"Lütfen tekrar deneyiniz",Toast.LENGTH_SHORT).show();
         }
-
 
     }
     public void onClickDoctor(View v) {
@@ -345,9 +332,9 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
 
         }
         else
-            {
-                Toast.makeText(Anasayfa.this,"Lütfen tekrar deneyiniz",Toast.LENGTH_SHORT).show();
-            }
+        {
+            Toast.makeText(Anasayfa.this,"Lütfen tekrar deneyiniz",Toast.LENGTH_SHORT).show();
+        }
 
 
 
@@ -389,8 +376,7 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
     public void onClickFriend(View v)
     {
         kayitlariGetir();
-        String telNo = getYakinnum();
-
+        String telNo =getYakinnum();
         JsonParse();
         if(getKonum()!="null")
         {
@@ -411,23 +397,23 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
             }
         }
         else
-            {
+        {
             Toast.makeText(Anasayfa.this,"Lütfen tekrar deneyiniz",Toast.LENGTH_SHORT).show();
-            }
+        }
     }
 
-        public void onClickExit(View v) {
-            Intent i = new Intent(Anasayfa.this, Giris.class);
-            FirebaseAuth.getInstance().signOut();
-            startActivity(i);
-        }
+    public void onClickExit(View v) {
+        Intent i = new Intent(Anasayfa.this, Giris.class);
+        FirebaseAuth.getInstance().signOut();
+        startActivity(i);
+    }
 
 
 
-        public void onClickProfilEdit(View v) {
-            Intent i = new Intent(Anasayfa.this, Profili_Duzenle.class);
-            startActivity(i);
-        }
+    public void onClickProfilEdit(View v) {
+        Intent i = new Intent(Anasayfa.this, Profili_Duzenle.class);
+        startActivity(i);
+    }
 
     private void JsonParse() {
         Log.d(TAG, "JsonParse: BU METOD ÇALIŞTI");
@@ -493,15 +479,11 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
 
-
                             //txtalinanKullanici.append(dataSnapshot.getValue().toString());
                             setHastaneNumarasi(dataSnapshot.getValue().toString());
-
-
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
                         }
                     });
                     //*******************************************************************************************
@@ -529,7 +511,6 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
                 JSONObject results;
                 JSONArray jsonArray = null;
                 JSONObject title;
-
                 try {
                     results=response.getJSONObject("results");
                     jsonArray = results.getJSONArray("items");
@@ -541,16 +522,11 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
                     reference.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-
-
                             //txtalinanKullanici.append(dataSnapshot.getValue().toString());
                             setPolisNumarasi((dataSnapshot.getValue().toString()));
-
-
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
                         }
                     });
                     //*******************************************************************************************

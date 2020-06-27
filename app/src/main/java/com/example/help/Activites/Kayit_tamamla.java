@@ -1,22 +1,14 @@
 package com.example.help.Activites;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -27,12 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-
-
 public class Kayit_tamamla extends AppCompatActivity implements LocationListener {
 
-
-    Bundle bnd3,bnd4;
     String enlem,boylam;
     private EditText Kullanici,
             TC, Ilac,Kronik, Gecirilen,
@@ -47,15 +35,10 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
     private String [] rh={"+","-"};
     private ArrayAdapter<String> dataAdapterForKan;
     private ArrayAdapter<String> dataAdapterForRh;
-
-    LocationManager konum_yoneticisi;
     String provider;
-
-
 
     private void init()
     {
-
         db2=FirebaseDatabase.getInstance();
         Kullanici = findViewById(R.id.etKullanici);
         TC = findViewById(R.id.etTC);
@@ -77,7 +60,6 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
         DatabaseReference dbRef=db2.getReference().child("Kullanici_Bilgisi");
         String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         dbRef.child(uid).setValue(new Kullanici(isim,tc,ilac,kronik,gecirilen,kan,yakinadi,yakinno,cinsiyet,numara));
-
     }
 
     @Override
@@ -85,9 +67,6 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.kayit_tamamla);
-
-        bnd3= new Bundle();
-        bnd4= new Bundle();
         init();
         //Spinner'lar için adapterleri hazırlıyoruz.
         dataAdapterForKan = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, kan);
@@ -129,35 +108,12 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
             }
         });
 
-        konum_yoneticisi = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        provider = konum_yoneticisi.getBestProvider(criteria, false);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
 
-            return;
-        }
-        Location lokasyon = konum_yoneticisi.getLastKnownLocation(provider);
-
-        if (lokasyon != null)
-        {
-
-        }
-        else {
-            //txtEnlem.setText("NotAvaliable");
-            // txtBoylam.setText("Not Avaiable");
-            enlem="not";
-            boylam="not";
-        }
 
 
     }
     public void onRadioButtonClicked(View view) {
-
         boolean checked = ((RadioButton) view).isChecked();
-
         switch(view.getId()) {
             case R.id.radioBtnKadin:
                 if (checked) cinsiyet = "Kadın";
@@ -165,30 +121,9 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
             case R.id.radioBtnErkek:
                 if (checked) cinsiyet = "Erkek";
                     break;
-
-        }}
-
-
-
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        if (ActivityCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission
-                (this,Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
-            return;
         }
-        konum_yoneticisi.requestLocationUpdates(provider, 10, 1, this);
     }
 
-    @Override
-    protected void onPause()
-    {
-        super.onPause();
-        konum_yoneticisi.removeUpdates(this );
-    }
     @Override
     public void onLocationChanged(Location location)
     {
@@ -196,15 +131,11 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
         double log=location.getLongitude();//boylam bilgisi çekildi
         enlem=String.valueOf(lat);//enlemi doubledan stringe çevirdik.
         boylam=String.valueOf(log);
-
     }
-
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras)
     {
-
     }
-
     @Override
     public void onProviderEnabled(String provider)
     {
@@ -235,13 +166,11 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
         Kronik.setError("Kronik Hastalıklar boş bırakılamaz.");
         else if (Gecirilen.getText().toString().trim().equals(""))
         Gecirilen.setError("Geçirilen Hastalıklar boş bırakılamaz.");
-
         else if (YakinAdi.getText().toString().trim().equals(""))
             YakinAdi.setError("Yakın Adı boş bırakılamaz.");
         else if (YakinNumarasi.getText().toString().trim().equals(""))
             YakinNumarasi.setError("Yakın Numarası boş bırakılamaz.");
         else {
-
             String tc=TC.getText().toString().trim();
             String ilac=Ilac.getText().toString().trim();
             String kronik=Kronik.getText().toString().trim();
@@ -251,17 +180,9 @@ public class Kayit_tamamla extends AppCompatActivity implements LocationListener
             String gecirilen=Gecirilen.getText().toString().trim();
             String iletisim_num=Numara.getText().toString().trim();
             String Isim=Kullanici.getText().toString().trim();
-
-
             profil_olustur(Isim,tc,ilac,kronik,gecirilen,kan,yakinadi,yakinno,cinsiyet,iletisim_num);
             final Intent intent=new Intent(getApplicationContext(),Anasayfa.class);
-            bnd3.putString("enlem",cinsiyet);
-            intent.putExtras(bnd3);
-            bnd4.putString("boylam",boylam);
-            intent.putExtras(bnd4);
             startActivity(intent);
-
-
         }
     }
 }
