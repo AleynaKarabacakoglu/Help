@@ -33,7 +33,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-
 public class Anasayfa extends AppCompatActivity implements LocationListener  {
 
     private static final String TAG = "Anasayfa";
@@ -222,7 +221,7 @@ public class Anasayfa extends AppCompatActivity implements LocationListener  {
 
         if (lokasyon != null)
         {
-
+            Toast.makeText(this,"lokasyon: null ",Toast.LENGTH_SHORT).show();
         }
         else {
             txtkonum.setText("NotAvaliable");
